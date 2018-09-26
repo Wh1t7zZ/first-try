@@ -1,0 +1,314 @@
+1.MySQL概述
+  1.什么是数据库
+    存储数据的仓库
+  2.那些公司使用数据库
+    金融机构,游戏网站,购物网站,论坛网站.....
+  3.数据库服务的软件
+    1.软件分类
+      MySQL,Oracle,SQL_server,MongoDB,DB2,Maraidb
+    2.生产环境中如何选择使用哪个数据库软件
+     1.是否开源
+        1.开源软件:MySQL， Mariadb，MongoDB
+        2.商业软件:Oracle,DB2,SQL_server
+     2.是否跨平台
+        1.不跨平台: SQL_server
+        2.跨平台:.....
+     3，公司的类型
+        1.商业软件：政府机构，金融机构
+        2.开源软件：游戏网站，购物网站，论坛网站...
+  4，MySQL 的特点
+    1，关系型数据库
+      1，关系型数据库特点
+        1，数据是以行和列（表格）的形式去存储的
+        2，表中的每一行叫一条记录，每一列叫一个字段
+        3，表和表之间的逻辑关联叫关系      2.示例  
+        1、关系型数据库存储
+        表1、学生信息表
+        姓名       年龄        班级
+        星矢        25         三班
+        水冰月      23         六班
+        表2、班级信息表
+        班级       班主任
+        三班       大空翼
+        六班        松人
+      	2、非关系型数据库存储
+        {"姓名":"星矢","年龄":25,"班级":"三班","班主任":"大空翼"}
+        {"姓名":"水冰月","年龄":26,"班级":"六班","班主任":"松人"}
+    2.可以在Unix，Linux，Windows 上运行数据库服务
+    3，支持多种编程语言
+       python, java, php...
+
+  
+   5,数据库软件，数据库，数据仓库的概念
+      1，数据库软件
+      一个软件，看的见，可操作，实现数据库的逻辑功能
+
+      2，数据库
+      是一种逻辑概念，用来存放数据的仓库，侧重存储
+
+      3，数据仓库
+       从数据量上来说，比数据库庞大的多，主要是用于数据分析和数据挖掘
+      数据库：user表 验证
+      数据仓库：哪个时间段用户登录量最多,哪个用户一年购物最多,...... 
+
+2.MySQL安装
+  1.UBuntu安装MySQL服务
+    1.安装服务器端
+      sudo apt-get install mysql-server
+    2.安装客户端
+      sudo apt-get install mysql-client    3.Ubuntu安装软件
+      1，sudo apt-get update
+        访问源列表中的每个网址，读取软件列表，保存到本地/var/lib/apt/lists/
+      2，sudo apt-get upgarade
+        把本地已安装软件与刚下载的软件列表进行对比，如果发现已安装软件版本低，则更新
+      3，sudo apt-get -f install 
+        修复依赖关系
+  2,windows安装MySQL
+    1，下载MySQL 安装包（windows）
+      mysql-installer***5.7.***.msi
+    2，双击、按照教程安装即可
+  
+  3.mac安装MySQL
+    1.下载安装包
+    2.设置环境变量
+      1.vi .bash_profile
+      2.添加如下内容保存退出
+        export PATH=${PATH}:/user/local/mysql/bin
+      3.终端:source .bash_prodfile
+      4.验证:mysql -uroot -p密码
+
+3.启动和连接MySQL服务
+  1，服务端启动
+    1，查看MySQL状态
+      sudo /etc/init.d/mysql status  状态
+      sudo /etc/init.d/mysql start | stop | restart |reload
+                                启动   停止    重启    重加载
+  2，客户端连接
+    1，命令格式
+      mysql -h主机地址 -u用户名 -p密码 
+      mysql -hlocalhost -uroot -p123456
+    2，本地登录可省略-h选项 
+      mysql -uroot -p123456
+      mysql -uroot -p #这个是输入密码的
+
+4，基本SQL命令
+  1，SQL命令的使用规则
+    每条命令必须以;结尾
+    SQL命令不区分字母大小写
+    使用\c来终止当前命令的执行
+  2，库的管理
+    1，库的基本操作
+      1，查看已有库
+        show databases;
+      2,创建库
+        create database 库名 [character set utfcreate8];
+      3，查看创建库的语句(字符集)
+        show create database 库名;
+      4，查看当前所在库
+        select database();
+      5，切换库
+        use 库名;
+      6，查看库中已有表
+        show tables;
+      7，删除库
+        drop database 库名;
+    2，库名的命名规则
+      数字，字母，下划线，但不能使用纯数字
+      库名区分字母大小写
+      不能使用特殊字符和MySQL关键字
+
+  3,表的管理
+    1.表的基本操作
+      1.创建表 
+        create table 表名( 
+        字段名1 数据类型, 
+        字段名2 数据类型, 
+        字段名3 数据类型 
+        )character set utf8;
+      2.查看创建表的语句(字符集、存储引擎) 
+        show create table 表名;
+      3.查看表结构 
+        desc 表名;
+      4.删除表 
+        drop table 表名;    2.练习
+     创建库python1
+     create database python1;
+     在python1库中创建表，pymysq1并指定字符集为utf8，字段有三个id，name char(15), age
+     use python1;
+     create table pymysq1(
+     id int,
+     name char(15),
+     age int
+     )character set utf8;
+     查看创建表pymysq1的语句
+     show tables;
+     查看pymysq1的表结构
+     desc pymysq1;
+     删除表pymysq1
+     drop table pymysq1;
+     创建库python2
+     create database python2;
+     在python2中创建表t1，并指定字符集为uft8，字段有id, name, score, 数据类型自己定义
+     use python2;
+     create table t1(
+     id int,
+     name char(20),
+     score int
+     )character set utf8;
+     查看t1的表结构
+     desc t1;
+     删除表t1
+     drop table t1;
+     删除库python2
+     drop database python2;
+  4,注意：
+    1,所有的数据都是以文件的形式存放在数据库目录下
+     数据库目录 :/var/lib/mysql (默认安装路径）
+  5.表记录管理
+    1.插入(insert)
+      1.insert into 表名 values(值1),(值2);
+      2.insert into 表名(字段名1,字段名2,..) values(值1),(值2),..;
+    2.查询(select)
+      1.select * from 表名 [where 条件];
+      2.select 字段 1,字段2,from 表名[where 条件];
+    3.练习
+     查看所有库
+     show databases;
+     创建你新库 studb
+     create database studb;
+     在 studb 中创建表 tab1，指定字符集uft8，字段 有id，name，age
+     use studb;
+     create table tab1(
+     id int,
+     name char(15),
+     age int
+     )character set utf8;
+     查看tab1的表结构
+     desc tab1;
+     在tab1中随便插入2条记录
+     insert into tab1 values(1,'tom',25),(2,'jarry',23);
+     在tab中的name，age两个字段插入2条记录
+     insert into tab1 (name,age) values ('sss',52),('ddd',48);
+     查看tab1中所有记录
+     select * from tab1;
+     查看tab1表中所有人的姓名和年龄
+     select name,age from tab1;
+     查看tab1表中年龄大于20的信息
+     select * from tab1 where age > 20;
+
+5.如何更改字符集
+  1.方法(通过更改mysql的配置文件)
+  2.步骤
+    1.获取root用户权限
+      sudo -i
+    2.cd /etc/mysql/mysql.conf.d
+    3.备份：cp mysqld.cnf mysqld.cnf.bak
+    4.subl mysqld.cnf
+      在[mysqld]下:
+      character_set_server = utf8
+    5.重启 mysql服务 
+      /etc/init.d/mysql restart
+   
+6.客户端把数据存储到数据库服务器上的过程
+  1.连接到数据服务器 mysql -u用户名 -p123456
+  2.选择一个库 use 库名
+  3.创建表/修改表 update 表名 ...
+  4.断开与数据库连接 exit; | quit; | \q;
+
+7.数据类型
+  1.数值类型
+    1.整型
+      1.int 大整型（4个字节）
+         取值范围：2**32 - 1（42亿多）
+      2.tinyint 微小整型（1个字节）
+        1.有符号（signed默认）：-128~127
+        2.无符号（unsigned）:0~255
+                 age tinyint unsigned,
+      3.smallint 小整形（2个字节）
+      4.bigint 极大整型（8个字节）
+
+    2.浮点型
+      1.float（4个字节，最多显示7个有效位)
+         1.用法
+	   字段名 float(m,n) m->总位数  n->小数位位数
+           float(5,2)取值范围？ -999.99~999.99
+	   ##m值最大为7
+      2.double
+        字段名 double(m,n)
+      3.decimal（最多显示28个有效位）
+        1.decimal(m,n)
+          存储空间(整数，小数分开存储)
+           规则：将9的倍数包装成4个字节
+                  余数        字节
+                   0            0
+                   1-2          1
+                   3-4          2
+                   5-6          3
+                   7-9          4
+          示例：decimal(19,9)
+          78部分：10/9=商1余1  4个字节+1个字节=5字节
+          小数部分：9/9=商1余0    4字节+0字节=4字节
+          占：9字节
+  2.字符类型
+
+    1.char:定长
+      取值范围：1-255
+    2.varchar（变长） 
+      取值范围：1-65535
+    3.char和varchar的特点 
+      varchar：节省存储空间，性能低
+      char：浪费存储空间，性能高
+    4.test / longtest(4G) / blob / longblob(4G)
+    5.字符类型的宽度与数值类型宽度的区别
+      1.数值类型宽度为显示宽度,只用于select查询时显示,
+        和占用存储无关,可用zerofill查看效果
+      2.字符类型的宽度超过后无法存储
+  3.枚举类型
+    1.单选enum
+      sex enum(值1,值2,..)
+    2.多选set
+      likes set(值1,值2,..)
+      ##插入记录时'study,python,mysql'
+8.练习
+     MySQL 中数据类型有：___ ___ 枚举类型 日期时间类型
+    关系型数据库中的核心内容是__关系_ 既 __二维表__
+    简述客户端把数据存储到数据库服务器上的过程
+    char和varchar的区别，各自的特点
+    操作
+        创建一个学生的库 school
+        create database school;
+        在库中创建表 students 用来存储学生信息:
+        id 大整型
+        姓名，年龄（不能为负），性别，成绩（浮点）爱好多选
+        use school;
+        create table student(
+        id int(3) zorefill,
+        name char(20),
+        age tinyint unsigned,
+        sex char(15),
+        score float(5,2)
+        )character set utf8;
+        查看students的表结构
+        desc students;
+        在表中随意插入3条记录
+        insert into students values (1,'zzz',18,'man',98.88),                 (2,'xxx',17,'woman',87),(3,'ccc',21,'man',67.65);
+        在表中的id 姓名，成绩三个字段插入3条记录
+        insert into students (name,score) values ('vvv',47),('bbb',57.5);
+        查看所有学生的姓名和成绩
+        select name,score from students;
+        查看成绩及格（>60分）的学生姓名和成绩
+        select * from students where age > 60;
+	更改配置文件,字符集改为utf8
+	 1.方法(通过更改mysql的配置文件)
+         2.步骤
+         1.获取root用户权限
+          sudo -i
+         2.cd /etc/mysql/mysql.conf.d
+         3.备份：cp mysqld.cnf mysqld.cnf.bak
+         4.subl mysqld.cnf
+          在[mysqld]下:
+          character_set_server = utf8
+         5.重启 mysql服务 
+          /etc/init.d/mysql restar
+	重启Mysql,并建库验证
+	sudo /etc/init.d/mysql restart
